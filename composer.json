@@ -1,0 +1,21 @@
+{
+  "name": "fabulator/fitbit-api",
+  "description": "Very basic Fitbit API.",
+  "authors": [
+    {
+      "name": "Michal Ozogan",
+      "email": "michal@ozogan.eu",
+      "homepage": "https://www.linkedin.com/in/michal-ozog%C3%A1n-74151b35?trk=hp-identity-name",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "PHP": ">=7.0",
+    "guzzlehttp/guzzle": ">=6.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "Fabulator": "lib/"
+    }
+  }
+}
