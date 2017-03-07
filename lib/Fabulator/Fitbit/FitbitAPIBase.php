@@ -1,5 +1,5 @@
 <?php
-namespace Fabulator;
+namespace Fabulator\Fitbit;
 
 use \GuzzleHttp\Client;
 use \Psr\Http\Message\ResponseInterface;
