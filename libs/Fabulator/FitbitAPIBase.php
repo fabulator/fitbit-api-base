@@ -4,7 +4,7 @@ namespace Fabulator;
 use \GuzzleHttp\Client;
 use \Psr\Http\Message\ResponseInterface;
 
-class FitbitAPI
+class FitbitAPIBase
 {
 
     private $fitbitAPIUrl = 'https://api.fitbit.com/';
