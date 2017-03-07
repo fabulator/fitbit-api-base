@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "PHP": ">=7.0",
+    "PHP": ">=5.5",
     "guzzlehttp/guzzle": ">=6.0"
   },
   "autoload": {

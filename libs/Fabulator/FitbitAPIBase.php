@@ -16,7 +16,7 @@ class FitbitAPIBase
      * @param string $clientId your client id
      * @param string $secret your secret key
      */
-    public function __construct(string $clientId, string $secret)
+    public function __construct($clientId, $secret)
     {
         $this->clientId = $clientId;
         $this->secret = $secret;
@@ -36,12 +36,12 @@ class FitbitAPIBase
      * @return string url
      */
     public function getLoginUrl(
-        string $redirectUri,
-        array $scope,
-        string $responseType = 'code',
-        int $expiresIn = null,
-        string $prompt = 'none',
-        string $state = null): string
+        $redirectUri,
+        $scope,
+        $responseType = 'code',
+        $expiresIn = null,
+        $prompt = 'none',
+        $state = null)
     {
         $parameters = [
             'response_type' => $responseType,
@@ -71,7 +71,7 @@ class FitbitAPIBase
      * @param string|null $state This parameter will be added to the redirect URI exactly as your application specifies.
      * @return ResponseInterface response from Fitbit API
      */
-    public function requestAccessToken(string $code, string $redirectUri, int $expiresIn = null, string $state = null): ResponseInterface
+    public function requestAccessToken($code, $redirectUri, $expiresIn = null, $state = null)
     {
         $parameters = [
             'code' => $code,
@@ -98,7 +98,7 @@ class FitbitAPIBase
      * @param int|null $expiresIn set length of token
      * @return ResponseInterface response from Fitbit API
      */
-    public function refreshAccessToken(string $refreshToken, int $expiresIn = null): ResponseInterface
+    public function refreshAccessToken($refreshToken, $expiresIn = null)
     {
         $parameters = [
             'grant_type' => 'refresh_token',
@@ -118,7 +118,7 @@ class FitbitAPIBase
      * @param string $token token to revoke
      * @return ResponseInterface response from Fitbit API
      */
-    public function revokeAccessToken(string $token): ResponseInterface
+    public function revokeAccessToken($token)
     {
         $parameters = [
             'token' => $token,
@@ -134,7 +134,7 @@ class FitbitAPIBase
      * @param array $parameters request parameters
      * @return ResponseInterface response from Fitbit API
      */
-    private function tokenRequest(string $namespace, array $parameters): ResponseInterface
+    private function tokenRequest($namespace, $parameters)
     {
         $client = new Client([
             'headers' => [
@@ -150,9 +150,9 @@ class FitbitAPIBase
      * Set Fitbit token
      *
      * @param string $token token to set
-     * @return FitbitAPI
+     * @return FitbitAPIBase
      */
-    public function setToken(string $token): FitbitAPI
+    public function setToken($token)
     {
         $this->token = $token;
         return $this;
@@ -172,9 +172,9 @@ class FitbitAPIBase
      * Set custom headers for API requests.
      *
      * @param array $headers
-     * @return FitbitAPI
+     * @return FitbitAPIBase
      */
-    public function setHeaders(array $headers): FitbitAPI
+    public function setHeaders($headers)
     {
         $this->headers = $headers;
         return $this;
@@ -186,7 +186,7 @@ class FitbitAPIBase
      *
      * @return array
      */
-    public function getHeaders(): array
+    public function getHeaders()
     {
         return $this->headers;
     }
@@ -200,7 +200,7 @@ class FitbitAPIBase
      * @param string $file format of response
      * @return ResponseInterface response from Fitbit API
      */
-    public function get(string $namespace, string $user = '-', string $file = '.json'): ResponseInterface
+    public function get($namespace, $user = '-', $file = '.json')
     {
         return $this->send($namespace, 'GET', [], $user, $file);
     }
@@ -213,7 +213,7 @@ class FitbitAPIBase
      * @param string $user Fitbit user
      * @return ResponseInterface response from Fitbit API
      */
-    public function post(string $namespace, array $data, string $user = '-'): ResponseInterface
+    public function post($namespace, $data, $user = '-')
     {
         return $this->send($namespace, 'POST', $data, $user);
     }
@@ -225,7 +225,7 @@ class FitbitAPIBase
      * @param string $user Fitbit user
      * @return ResponseInterface response from Fitbit API
      */
-    public function delete(string $namespace, string $user = ''): ResponseInterface
+    public function delete($namespace, $user = '')
     {
         return $this->send($namespace, 'DELETE', [], $user);
     }
@@ -240,7 +240,7 @@ class FitbitAPIBase
      * @param string $file type of requested format
      * @return ResponseInterface response from Fitbit API
      */
-    public function send(string $namespace, string $method = 'GET', array $data = [], string $user = '-', string $file = '.json'): ResponseInterface
+    public function send($namespace, $method = 'GET', $data = [], $user = '-', $file = '.json')
     {
         $client = new Client();
 
