@@ -1,5 +1,5 @@
 {
-  "name": "fabulator/fitbit-api",
+  "name": "fabulator/fitbit-api-base",
   "description": "Very basic Fitbit API.",
   "authors": [
     {
