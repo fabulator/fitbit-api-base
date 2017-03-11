@@ -4,15 +4,51 @@ namespace Fabulator\Fitbit;
 use \GuzzleHttp\Client;
 use \Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class FitbitAPIBase
+ * @package Fabulator\Fitbit
+ */
 class FitbitAPIBase
 {
 
-    private $fitbitAPIUrl = 'https://api.fitbit.com/';
+    /**
+     * @var string API url
+     */
+    const FITBIT_API_URL = 'https://api.fitbit.com/';
+
+    /**
+     * @var string
+     */
+    const FITBIT_OAUTH_URL = 'https://www.fitbit.com/oauth2/authorize';
+
+    /**
+     * @var string
+     */
     private $token;
+
+    /**
+     * @var array
+     */
     private $headers = [];
 
     /**
+     * @var string Fitbit client id
+     */
+    private $clientId;
+
+    /**
+     * @var string Fitbit secret ID
+     */
+    private $secret;
+
+    /**
+     * @var Client
+     */
+    private $client;
+
+    /**
      * Fitbit constructor.
+     *
      * @param string $clientId your client id
      * @param string $secret your secret key
      */
@@ -20,6 +56,7 @@ class FitbitAPIBase
     {
         $this->clientId = $clientId;
         $this->secret = $secret;
+        $this->client = new Client();
     }
 
 
@@ -59,7 +96,7 @@ class FitbitAPIBase
             $parameters['state'] = $state;
         }
 
-        return 'https://www.fitbit.com/oauth2/authorize?' . http_build_query($parameters);
+        return self::FITBIT_OAUTH_URL . '?' . http_build_query($parameters);
     }
 
     /**
@@ -139,11 +176,11 @@ class FitbitAPIBase
         $client = new Client([
             'headers' => [
                 'content-type' => 'application/x-www-form-urlencoded',
-                'Authorization' => 'Basic '. base64_encode($this->clientId . ':' . $this->secret)
+                'Authorization' => 'Basic '. base64_encode($this->clientId . ':' . $this->secret),
             ]
         ]);
 
-        return $client->post($this->fitbitAPIUrl . $namespace . '?' . http_build_query($parameters));
+        return $client->post(self::FITBIT_API_URL . $namespace . '?' . http_build_query($parameters));
     }
 
     /**
@@ -163,7 +200,7 @@ class FitbitAPIBase
      *
      * @return string token
      */
-    public function getToken(): string
+    public function getToken()
     {
         return $this->token;
     }
@@ -191,59 +228,16 @@ class FitbitAPIBase
         return $this->headers;
     }
 
-
-    /**
-     * Send GET request to Fitbit API.
-     *
-     * @param string $namespace called namespace
-     * @param string $user Fitbit user
-     * @param string $file format of response
-     * @return ResponseInterface response from Fitbit API
-     */
-    public function get($namespace, $user = '-', $file = '.json')
-    {
-        return $this->send($namespace, 'GET', [], $user, $file);
-    }
-
-    /**
-     * Send POST request to Fitbit API.
-     *
-     * @param string $namespace called namespace
-     * @param array $data data in body to send
-     * @param string $user Fitbit user
-     * @return ResponseInterface response from Fitbit API
-     */
-    public function post($namespace, $data, $user = '-')
-    {
-        return $this->send($namespace, 'POST', $data, $user);
-    }
-
-    /**
-     * Send DELETE request to Fitbit API.
-     *
-     * @param string $namespace called namespace
-     * @param string $user Fitbit user
-     * @return ResponseInterface response from Fitbit API
-     */
-    public function delete($namespace, $user = '')
-    {
-        return $this->send($namespace, 'DELETE', [], $user);
-    }
-
     /**
      * Send authorized request to Fitbit API.
      *
-     * @param string $namespace called namespace
+     * @param string $url called url
      * @param string $method http method
      * @param array $data data in body
-     * @param string $user Fitbit user
-     * @param string $file type of requested format
      * @return ResponseInterface response from Fitbit API
      */
-    public function send($namespace, $method = 'GET', $data = [], $user = '-', $file = '.json')
+    public function send($url, $method = 'GET', $data = [])
     {
-        $client = new Client();
-
         $method = strtolower($method);
 
         $settings = [
@@ -256,8 +250,8 @@ class FitbitAPIBase
             $settings['body'] = $data;
         }
 
-        return $client
-            ->$method($this->fitbitAPIUrl . '1/' . ($user ? 'user/' . $user . '/' : '') . $namespace . $file, $settings);
+        return $this->client
+            ->$method(self::FITBIT_API_URL . $url, $settings);
     }
 
 }
