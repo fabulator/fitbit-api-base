@@ -8,18 +8,18 @@ use \Psr\Http\Message\ResponseInterface;
  * Class FitbitAPIBase
  * @package Fabulator\Fitbit
  */
-class FitbitAPIBase
+class FitbitApiBase
 {
 
     /**
      * @var string API url
      */
-    const FITBIT_API_URL = 'https://api.fitbit.com/';
+    const FITBIT_API_URL = 'https://api.fitbit.com/1/';
 
     /**
      * @var string
      */
-    const FITBIT_OAUTH_URL = 'https://www.fitbit.com/oauth2/authorize';
+    const FITBIT_OAUTH_URL = 'https://api.fitbit.com';
 
     /**
      * @var string
@@ -180,14 +180,14 @@ class FitbitAPIBase
             ]
         ]);
 
-        return $client->post(self::FITBIT_API_URL . $namespace . '?' . http_build_query($parameters));
+        return $client->post(self::FITBIT_OAUTH_URL . '/' . $namespace . '?' . http_build_query($parameters));
     }
 
     /**
      * Set Fitbit token
      *
      * @param string $token token to set
-     * @return FitbitAPIBase
+     * @return FitbitApiBase
      */
     public function setToken($token)
     {
@@ -209,7 +209,7 @@ class FitbitAPIBase
      * Set custom headers for API requests.
      *
      * @param array $headers
-     * @return FitbitAPIBase
+     * @return FitbitApiBase
      */
     public function setHeaders($headers)
     {
@@ -243,15 +243,16 @@ class FitbitAPIBase
         $settings = [
             'headers'  => array_merge([
                 'Authorization' => 'Bearer ' . $this->getToken(),
+                'Content-Type' => 'application/x-www-form-urlencoded',
             ], $this->getHeaders()),
         ];
 
         if ($method == 'post') {
-            $settings['body'] = $data;
+            $settings['form_params'] = $data;
         }
 
         return $this->client
-            ->$method(self::FITBIT_API_URL . $url, $settings);
+            ->$method($url, $settings);
     }
 
 }
