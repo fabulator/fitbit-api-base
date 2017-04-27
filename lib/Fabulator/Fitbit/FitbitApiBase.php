@@ -14,12 +14,12 @@ class FitbitApiBase
     /**
      * @var string API url
      */
-    const FITBIT_API_URL = 'https://api.fitbit.com/1/';
+    const FITBIT_API_URL = 'https://api.fitbit.com/';
 
     /**
      * @var string
      */
-    const FITBIT_OAUTH_URL = 'https://api.fitbit.com';
+    const FITBIT_OAUTH_URL = 'https://www.fitbit.com/oauth2/authorize';
 
     /**
      * @var string
@@ -180,7 +180,7 @@ class FitbitApiBase
             ]
         ]);
 
-        return $client->post(self::FITBIT_OAUTH_URL . '/' . $namespace . '?' . http_build_query($parameters));
+        return $client->post(self::FITBIT_API_URL . $namespace . '?' . http_build_query($parameters));
     }
 
     /**
